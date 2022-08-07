@@ -9,9 +9,9 @@ require_once "vista/includes/header.php";
 
 <body>
   <div class="container my-3">
-    <div class="p-5 bg-light">
-      <div class="container">
-        <h1 class="display-3">index de inicio</h1>
+    <div class="p-5 bg-light ">
+      <div class="container text-secondary">
+        <h1 class="display-3 ">index de inicio</h1>
         <p class="lead">Lorem ipsum dolor sit amet consectetur adipisicing elit. Esse, corrupti fugiat distinctio, vero qui aut ea, inventore exercitationem laudantium recusandae commodi officia voluptates! Assumenda culpa tempore, explicabo dignissimos ducimus fugit
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi consequatur maxime fuga nemo distinctio architecto soluta incidunt error dolorum quos dolores, asperiores odio nulla harum deleniti odit sit, aliquam accusantium.
         </p>

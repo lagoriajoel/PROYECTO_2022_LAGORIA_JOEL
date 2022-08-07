@@ -9,7 +9,6 @@ namespace modelo\entidades;
  private   $nombres;
  private   $apellido;
  private   $dni;
-
  private   $cuil;
  private   $domicilio;
  private   $domicilioLocalidad;
@@ -17,8 +16,8 @@ namespace modelo\entidades;
  private   $telefono01;
  private   $telefono02;
  private   $correo;
- private   $fechaDeNacimiento;
- private   $fechaDeAlta;
+ private   $fechaNacimiento;
+ private   $fechaAlta;
 
 
 
@@ -42,7 +41,7 @@ namespace modelo\entidades;
                   $this->setTelefono02("");
                   $this->setCorreo("");
                   $this->setFechaNacimiento("");
-                  $this->setFechaDeAlta("");
+                  $this->setFechaAlta("");
 
 
 
@@ -62,7 +61,7 @@ namespace modelo\entidades;
 
             return $this->apellido;
         }
-        public function getDni(): int{
+        public function getDni(): string{
 
             return $this->dni;
         }
@@ -96,11 +95,11 @@ namespace modelo\entidades;
         }
         public function getFechaNacimiento(): string{
 
-            return $this->fechaDeNacimiento;
+            return $this->fechaNacimiento;
         } 
         public function getFechaAlta(): string{
 
-            return $this->fechaDeAlta;
+            return $this->fechaAlta;
         }
 
         // setter
@@ -163,16 +162,11 @@ namespace modelo\entidades;
 
             $this->correo=(is_string($correo) && strlen($correo)<=80)? trim($correo):"";
         }
-        public function setFechaNacimiento($fechaDeNacimiento): void {
-
-            $date = date_create($fechaDeNacimiento);
-
-            $this->fechaDeNacimiento=$formated_DATE = date_format($date, 'Y-m-d');
+        public function setFechaNacimiento($fechaNacimiento): void {
+            $this->fechaNacimiento = (is_string($fechaNacimiento) && preg_match("/^[0-3][0-9]-[0,1][0-9]-\d{4}(\s{1})[0-2][0-9]:[0-5][0-9]:[0-5][0-9]$/", $fechaNacimiento)) ? $fechaNacimiento : "";
         }
-        public function setFechaDeAlta($fechaDeAlta): void {
-
-
-            
+        public function setFechaAlta($fechaAlta): void {
+            $this->fechaAlta = (is_string($fechaAlta) && preg_match("/^[0-3][0-9]-[0,1][0-9]-\d{4}(\s{1})[0-2][0-9]:[0-5][0-9]:[0-5][0-9]$/", $fechaAlta)) ? $fechaAlta : "";
         }
         
 

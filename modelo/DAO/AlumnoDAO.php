@@ -1,10 +1,14 @@
 <?php
  require_once "DAOinterface.php";
+ require_once "modelo/DAO/DAOInterface.php";
+require_once "modelo/entidades/alumnoEntidad.php";
+
+use modelo\entidades\AlumnoEntidad as AlumnoEntidad;
 
  class AlumnoDAO  implements DAOinterface {
 
 
-  private $conexion=null;
+  private $conexion;
    
 
      function __construct($conexion){
@@ -20,82 +24,100 @@
     public function cargar($id){
         
        
-       
-        $sql='SELECT * FROM alumnos WHERE id=?';
+        if(!is_integer($id)) throw new Exception("El formato del identificador de alumno es incorrecto");
 
-        $stmt=$this->conexion->prepare($sql);
-        $stmt->execute(array($id));
-
-        $resultado=$stmt->fetchAll(PDO::FETCH_ASSOC);
-       
-        $count=$stmt->rowCount();
-       
-        if ($count===0) {
-           echo "registro vacio";
-        } 
-        else {
-          
-            foreach($resultado as $result){
-
-                echo  $result['id']." ".$result['apellido']." ".$result['nombres']." ".$result['dni']." ".$result['cuil']." ".$result['domicilio']." ".$result['domicilio_localidad']." ".$result['domicilio_provincia']." ".$result['telefono01']." ".$result['telefono02']." ".$result['fecha_nacimiento']." ".$result['fecha_alta'];
-              }
+        $sql = 'SELECT id, apellido, nombres, dni, cuil, domicilio, domicilio_localidad, domicilio_provincia, telefono01, telefono02, correo, DATE_FORMAT(fecha_nacimiento,"%Y-%m-%d") as fechaNacimiento,DATE_FORMAT(fecha_alta,"%Y-%m-%d") as fechaAlta FROM alumnos WHERE id = :id';
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->execute(array("id" => $id));
+        if($stmt->rowCount() != 1){
+            throw new Exception("No se encontraron coincidencias con el id = ".$id);
         }
+        $registro = $stmt->fetch(PDO::FETCH_ASSOC);
+        $alumno = new AlumnoEntidad();
+        $alumno->setIdAlumno((int)$registro["id"]);
+        $alumno->setApellido($registro["apellido"]);
+        $alumno->setNombres($registro["nombres"]);
+        $alumno->setDni($registro["dni"]);
+        $alumno->setCuil($registro["cuil"]);
+        $alumno->setDomicilio($registro["domicilio"]);
+        $alumno->setDomicilioLocalidad($registro["domicilio_localidad"]);
+        $alumno->setDomicilioProvincia($registro["domicilio_provincia"]);
+        $alumno->setTelefono01($registro["telefono01"]);
+        $alumno->setTelefono02($registro["telefono02"]);
+        $alumno->setCorreo($registro["correo"]);
+        $alumno->setFechaNacimiento($registro["fechaNacimiento"]);
+        $alumno->setFechaAlta($registro["fechaAlta"]);
+
         
-        
+        return $alumno;
     }
+    
 
 
     public function guardar($entidad){
         
-        $this->validar($entidad);
-        $this->existePerfil($entidad);
+      try {
+        //code...
+      
 
+        $sql = 'INSERT INTO alumnos VALUES(DEFAULT, :apellido, :nombres, :dni, :cuil, :domicilio, :domicilio_localidad, :domicilio_provincia,:telefono01, :telefono02,:correo, :fecha_nacimiento, NOW())';
+       $stmt = $this->conexion->prepare($sql);
+       $stmt->execute(array(
+     
+           "apellido" => $entidad->getApellido(),
+           "nombres" => $entidad->getNombres(),
+           "dni" => $entidad->getDni(),
+           "cuil" => $entidad->getCuil(),
+           "domicilio" => $entidad->getDomicilio(),
+           "domicilio_localidad" => $entidad->getDomicilioLocalidad(),
+           "domicilio_provincia" => $entidad->getDomicilioProvincia(),
+           "telefono01" => $entidad->getTelefono01(),
+           "telefono02" => $entidad->getTelefono02(),
+           "correo" => $entidad->getCorreo(),
+           "fecha_nacimiento" => $entidad->getFechaNacimiento()
+        ));
+         
+       
 
-        $sql='INSERT INTO alumnos VALUES (DEFAULT ,?,?,?,?,?,?,?,?,?,?,?)';
+       
+       if($stmt->rowCount() != 1){
+           throw new Exception("No se pudo insertar el registro");
+       }
 
-        $stmt= $this->conexion->prepare($sql);
-        $stmt->execute(array($entidad->getApellido(),$entidad->getNombres(),$entidad->getDni(),$entidad->getCuil(),$entidad->getDomicilio(),$entidad->getDomicilioLocalidad(),$entidad->getDomicilioProvincia(),$entidad->getTelefono01(),$entidad->getTelefono02(),$entidad->getFechaNacimiento(),$entidad->getFechaAlta()));
-        echo "registro Agregado";
-
-      if ($stmt->rowCount()!= 1){
-
+      } catch(Exception $e) {
+        echo "Error al guardar registro".$e->getMessage();
+    }
         
-        try {
-            throw new Exception("No se puede Ingresar Registro");
-        } catch(Exception $e) {
-            echo $e->getMessage();
-        }
       }
       
 
-    }
-
- 
-   
-
-   
         
     public function eliminar($id){
 
       $sql='DELETE FROM alumnos WHERE id = ?';
       $stmt= $this->conexion->prepare($sql);
-     if ($stmt->execute(array($id))) {
-        echo "Registro eliminado correctamente";
-     }else{echo " Error al eliminar el registro";}
+      $stmt->execute(array($id));
+      if($stmt->rowCount() != 1){
+        throw new Exception("No se pudo eliminar el registro");
+    }
+     
 
 
     }
 
     public function actualizar($entidad){
-
-       try {
-        $sql='UPDATE usuarios SET id=?, apellido=?,=?,nombres=?,dni=?,cuil=?,domicilio=?,domicilio_localidad=?,domicilio_provincia=?,telefono01=?,telefono02=?,fecha_nacimiento=?,fecha_alta=? WHERE id=?';
-        $stmt->execute(array($entidad->getId(),$entidad->getApellido(),$entidad->getNombres(),$entidad->getDni(),$entidad->getCuil(),$entidad->getDomicilio(),entidad->getDomicilioLocalidad(),entidad->getDomicilioProvincia(),$entidad->getTelefono01(),$entidad->getTelefono02()),$entidad->getFechaNacimiento(),$entidad->getFechaDeAlta()); 
-        echo "Registro Actualizado correctamente";
       
-    } catch(Exception $e) {
-        echo "Error al actualizar la informacion".$e->getMessage();
-    }
+       
+    
+        $sql='UPDATE alumnos SET apellido=?, nombres=?, dni=?,cuil=?,domicilio=?,domicilio_localidad=?,domicilio_provincia=?,telefono01=?,telefono02=?,fecha_nacimiento=?, correo=? WHERE id=?';
+        $stmt= $this->conexion->prepare($sql);
+        $stmt->execute(array($entidad->getApellido(),$entidad->getNombres(),$entidad->getDni(),$entidad->getCuil(),$entidad->getDomicilio(),$entidad->getDomicilioLocalidad(),$entidad->getDomicilioProvincia(),$entidad->getTelefono01(),$entidad->getTelefono02(),$entidad->getFechaNacimiento(), $entidad->getCorreo(), $entidad->getId())); 
+       
+        
+         
+        if($stmt->rowCount() != 1){
+            throw new Exception("Error al actualizar la informacion");
+        }
        
       
       
@@ -110,30 +132,58 @@
         $listado=$stmt->fetchAll(PDO::FETCH_ASSOC);
         $stmt->closeCursor();
         return $listado;
+        if($stmt->rowCount() != 1){
+            throw new Exception("Error al listar la informacion");
+        }
+       
 
 
     }
 
 
-    public function validar ($entidad){
-
-
-
-        if($entidad->getNombres()===""){
-
-
-            try {
-                throw new Exception("Error al ingresar datos");
-            } catch(Exception $e) {
-                echo $e->getMessage();
-            }
-            
+    public function validar($entidad){
+        
+        
+        if($entidad->getApellido() === ""){
+            throw new Exception("Debe especificar el apellido del usuario");
+        }
+        if($entidad->getNombres() === ""){
+            throw new Exception("Debe especificar el nombre del usuario");
+        }
+        if($entidad->getDni() === ""){
+            throw new Exception("Debe especificar un dni");
+        }
+        if($entidad->getCuil() === ""){
+            throw new Exception("Debe especificar un cuil");
+        }
+        if($entidad->getDomicilio() === ""){
+            throw new Exception("Debe especificar un Domicilio");
+        }
+        if($entidad->getDomicilioLocalidad() === ""){
+            throw new Exception("Debe especificar una Localidad");
+        }
+        if($entidad->getDomicilioProvincia() === ""){
+            throw new Exception("Debe especificar una Provincia");
+        } if($entidad->getTelefono01() === ""){
+            throw new Exception("Debe especificar una telefono");
+        }
+        if($entidad->getTelefono02() === ""){
+            throw new Exception("Debe especificar una telefono");
+        }
+        if($entidad->getCorreo() === ""){
+            throw new Exception("Debe especificar la dirección de correo");
+        }
+        if($entidad->getFechaNacimiento() == 0){
+            throw new Exception("Debe especificar una fecha de nacimiento");
+        }
+        if($entidad->getFechaAlta() == 0){
+            throw new Exception("Debe especificar una fecha de alta");
         }
     }
 
-    private function existePerfil($entidad){
+    private function existeAlumno($entidad){
 
-       $sql='SELECT id FROM perfiles WHERE id=?';
+       $sql='SELECT id FROM alumnos WHERE id=?';
 
        $stmt=$this->conexion->prepare($sql);
        $stmt->execute(array($entidad->getId()));

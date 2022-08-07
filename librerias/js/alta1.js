@@ -13,7 +13,7 @@
     const nombre=document.getElementById('nombre');
     const apellido=document.getElementById('apellido');
     const correo=document.getElementById('correo');
-    const password=document.getElementById('password1');
+    const password=document.getElementById('datoClave');
     const parrafo=document.getElementById('warnings');
     const form=document.getElementById('form');
 
@@ -29,7 +29,7 @@
     }
     
     
-    form.addEventListener("submit", e=>{
+     form.addEventListener("submit", e=>{
          e.preventDefault()
         
         
@@ -76,10 +76,8 @@
     })
 
 
-
-
     const validarPassword2 = () => {
-        const inputPassword1 = document.getElementById('password1');
+        const inputPassword1 = document.getElementById('datoClave');
         const inputPassword2 = document.getElementById('password2');
     
         if(inputPassword1.value !== inputPassword2.value){
@@ -93,4 +91,10 @@
         }
     }
 
+    function registrarNuevaCuenta(){
+        window.location.href = "usuario/guardar"
+    }
+    
+    
+   
    

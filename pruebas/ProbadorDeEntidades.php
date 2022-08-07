@@ -39,10 +39,12 @@ print_r($perfilAlumno->toJSON());
 // usuario entidad
 $perfilUsuario= new UsuarioEntidad();
 
-$perfilUsuario->setIdUsuario(20);
+$perfilUsuario->setIdUsuario();
 $perfilUsuario->setCuenta("lagoriaJoel");
 $perfilUsuario->setClave("456789");
 $perfilUsuario->setCorreo("lagoriajoel3413@gmail.com");
+$perfilUsuario->setCorreo("lagoriajoel3413@gmail.com");
+
 
 
 

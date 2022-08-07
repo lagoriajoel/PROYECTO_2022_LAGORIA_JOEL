@@ -20,6 +20,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="https://localhost/Proyecto_2022_Lagoria_Joel/perfil">Perfiles</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="https://localhost/Proyecto_2022_Lagoria_Joel/usuario/logout">Cerrar Sesion</a>
+                </li>
                 
                 
             </ul>

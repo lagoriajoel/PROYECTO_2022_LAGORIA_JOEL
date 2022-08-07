@@ -1,12 +1,12 @@
-<footer class="bg-dark text-white text-center" >
+<footer class="bg-dark  text-center footer" >
   <div class="container">
    
     <nav class="nav">
       <a class="nav-link active col-4" href="#">
 
-     <div class="display-block">
-     <p>Sistrema de Gestion de Padron de Estudiantes</p>
-     <div> <img src="recursos/imagenes/logo.png" width="80" height="70"></div>
+     <div class="display-block ">
+     <p class="text-white bg-dark">Sistrema de Gestion de Padron de Estudiantes</p>
+     <div> <img src="recursos/imagenes/logoFooter.png" width="80" height="70"></div>
      </div>
       </a>
       <a class="nav-link  col-4" href="#">

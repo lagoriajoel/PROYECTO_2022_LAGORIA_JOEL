@@ -1,24 +1,42 @@
 
-
 <?php
-require_once "vista/includes/head.php";
-require_once "vista/includes/header.php";
+require_once('vista/includes/head.php');
+require_once('vista/includes/header.php');
+
+
+
 
 ?>
+<script>
+       function NuevoAlumno(){
+        window.location.href = "alumno/guardar"
+    }
+    function exportarPDF(){
+        window.location.href = "alumno/exportar"
+    }
+    
+
+</script>
 
 <body>
-   <div class="container"> 
-    <div class="row my-3">
-    <div class="col-md-2 my-3">
-        <div>
-           <button type="button" class="btn btn-primary">Mostrar Lista</button>
-        </div>
-
-    </div>
-    <div class="col-md-10">
-    <div class="table-responsive">
-        <table class="table">
-            <thead>
+ <div class="container">
+    
+     <div class="container">
+       <div class="row m-2">
+            <div class="col">
+                       
+                        <button type="button" class="btn btn-light" onclick="NuevoAlumno()">Agregar Nuevo Alumno</button>
+                        <button type="button" class="btn btn-light" onclick="exportarPDF()">exportar a PDF</button>
+            </div>
+          
+       </div>
+     </div>
+            
+     
+      <div class="col">
+       
+         <table class="table">
+          <thead>
                 <tr>
                     <th>Apellidos</th>
                     <th>Nombres</th>
@@ -29,6 +47,7 @@ require_once "vista/includes/header.php";
                     <th>Provincia</th>
                     <th>Telefono 1</th>
                     <th>Telefono 2</th>
+                    <th>Correo</th>
 
                     <th>Fecha de Nacimiento</th>
                     <th>Fecha de Alta</th>
@@ -48,22 +67,22 @@ require_once "vista/includes/header.php";
                    <td> <?php echo $id['domicilio_provincia']?></td>
                    <td> <?php echo $id['telefono01']?></td>
                    <td> <?php echo $id['telefono02']?></td>
+                   <td> <?php echo $id['correo']?></td>
                    <td> <?php echo $id['fecha_nacimiento']?></td>
                    <td> <?php echo $id['fecha_alta']?></td>
 
 
 
-    
-                   <td>
-    
-                            <form method="post">
-                                <input type="hidden" name="txtID" id="txtID" value="<?php echo $id['id']; ?>"/>
-                                <input type="submit" name="action" value="Actualizar" class="btn btn-light">
-                                <input type="submit" name="action" value="Borrar" class="btn btn-light">
-    
-                            </form>
-                        </td>
-               
+                    <td>   
+                       <a href="alumno/cargar/<?php echo $id["id"]?>">Consultar</a></td>
+                    </td>
+                    <td>   
+                       <div class="icono">
+                        <a href="alumno/reportes/<?php echo $id["id"]?>"><i class="bi bi-file-earmark-pdf"></i>
+                        PDF</a>
+                      </div> 
+                    </td>
+                    </td>
                
                  
                 </tr>
@@ -71,15 +90,22 @@ require_once "vista/includes/header.php";
     
                 <?php }  ?>
              
-          
-            
-            </tbody>
-        </table>
+                
+                    
+                    </tbody>
+                </table>
+                
         
-        </div>
-    </div>
-    </div>
-</div>
+            </div>
+            </div>
     
+    </div>  
+</div>  
+</div>      
 </body>
+<?php
+require_once 'vista/includes/footer.php';
+
+
+?>
 </html>

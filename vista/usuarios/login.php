@@ -1,20 +1,6 @@
+
 <?php
-
-if($_POST) {
-    header('Location: index.php');
-}
-
-?>
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../../librerias/bootstrap/bootstrap.min.css"/>
-    <title>Document</title>
-</head>
+require_once "vista/includes/head.php";?>
 <body>   
     <div class="container">
         <br/>
@@ -27,16 +13,16 @@ if($_POST) {
                           <label for="" class="text-white">INGRESAR</label>
                         </div>
                  <div class="card-body">
-                      <form action="validar.php" method="post">
+                      <form action="usuario/login" method="post">
 
                             <div class = "form-group">
                             <label for="exampleInputEmail1">Cuenta </label>
-                            <input type="text" class="form-control" id="exampleInputEmail1" name ="cuenta" aria-describedby="emailHelp" placeholder="ingrese su cuenta">
+                            <input type="text" class="form-control" id="datoCuenta" name ="datoCuenta" aria-describedby="emailHelp" placeholder="ingrese su cuenta">
                            
                             </div>
                             <div class="form-group">
                             <label for="exampleInputPassword1">Contraseña</label>
-                            <input type="password" class="form-control" name="clave" id="exampleInputPassword1" placeholder="Ingrese su Contraseña">
+                            <input type="password" class="form-control" name="datoClave" id="datoClave" placeholder="Ingrese su Contraseña">
                             </div>
                             
                             
@@ -44,9 +30,16 @@ if($_POST) {
                            
                             <div>
                             <button type="submit" class="btn btn-primary">Ingresar</button>
+                            <input type="hidden" name="accion" value="autenticarse">
                             </div>
                         </form>
-                    
+             <?php
+                if($accion === "autenticarse"){
+                    if ($error !== ""){
+                         echo '<div class="alert alert-danger m-3"><p class="fw-bold">Error en la operación</p><p>'.$error.'</p></div>';
+                         }
+                     }
+            ?>      
                         </div>
                        
                      </div>

@@ -11,7 +11,7 @@ namespace modelo\entidades;
  private   $apellido;
  private   $nombres;
  private   $correo;
- private   $fechaDeAlta;
+ private   $fechaAlta;
  private   $estado;
  private   $perfilId;
  
@@ -25,7 +25,7 @@ namespace modelo\entidades;
                   $this->setNombres("");
                   $this->setCorreo("");
             
-                  $this->setFechaDeAlta("");
+                  $this->setfechaAlta("");
                   $this->setEstado(0);
                   $this->setPerfilId(3);
 
@@ -62,15 +62,15 @@ namespace modelo\entidades;
             return $this->correo;
         }
        
-        public function getFechaDeAlta(): string{
+        public function getfechaAlta(): string{
 
-            return $this->fechaDeAlta;
+            return $this->fechaAlta;
         }
         public function getEstado(): int{
 
             return $this->estado;
         }
-        public function getIdPerfil(): int{
+        public function getPerfilId(): int{
 
             return $this->perfilId;
         }
@@ -110,10 +110,10 @@ namespace modelo\entidades;
             $this->correo=(is_string($correo) && strlen($correo)<=80)? trim($correo):"";
         }
         
-        public function setFechaDeAlta($fechaDeAlta): void {
+        public function setFechaAlta($fechaAlta): void {
 
 
-            $this->fechaDeAlta=(is_string($fechaDeAlta) && strlen($fechaDeAlta)<=19)? trim($fechaDeAlta):"";
+            $this->fechaAlta=(is_string($fechaAlta) && strlen($fechaAlta)<=19)? trim($fechaAlta):"";
         }
         public function setEstado($estado): void {
 
@@ -139,7 +139,7 @@ namespace modelo\entidades;
             $json->{"cuenta"}= $this->getCuenta();
             $json->{"clave"}= $this->getClave();    
             $json->{"correo"}= $this->getCorreo();  
-            $json->{"fechaDeAlta"}= $this->getFechaAlta();
+            $json->{"fechaAlta"}= $this->getFechaAlta();
             $json->{"estado"}= $this->getEstado();
             $json->{"perfilId"}= $this->getPerfilId();
 
